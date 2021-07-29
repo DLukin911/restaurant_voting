@@ -8,8 +8,8 @@
         <version>2.5.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ru.dlukin.restaurantvoting</groupId>
-    <artifactId>restaurant-voting</artifactId>
+    <groupId>ru.dlukin.restaurant_voting</groupId>
+    <artifactId>restaurant_voting</artifactId>
     <version>1.0</version>
     <name>restaurant-voting</name>
     <description>Voting system for restaurants</description>
