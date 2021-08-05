@@ -1,4 +1,4 @@
-package ru.dlukin.restaurantvoting.restaurantvoting;
+package ru.dlukin.restaurant_voting;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

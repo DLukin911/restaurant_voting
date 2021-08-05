@@ -4,9 +4,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -14,14 +12,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @ToString(callSuper = true)
-public class Dish extends AbstractBaseEntity {
-
-    @Column(name = "name", nullable = false)
-    @NotBlank
-    @Size(min = 2, max = 128)
-    private String name;
+public class Dish extends AbstractNamedEntity {
 
     @Column(name = "date_menu", nullable = false)
     @NotNull
@@ -36,4 +28,15 @@ public class Dish extends AbstractBaseEntity {
     @NotNull
     @ManyToOne
     private Restaurant restaurant;
+
+    public Dish(Dish d) {
+        this(d.id, d.name, d.dateMenu, d.price, d.restaurant);
+    }
+
+    public Dish(Integer id, String name, LocalDate dateMenu, Integer price, Restaurant restaurant) {
+        super(id, name);
+        this.dateMenu = dateMenu;
+        this.price = price;
+        this.restaurant = restaurant;
+    }
 }

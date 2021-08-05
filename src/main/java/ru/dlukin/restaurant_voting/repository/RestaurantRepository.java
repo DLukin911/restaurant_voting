@@ -1,8 +1,10 @@
 package ru.dlukin.restaurant_voting.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 
-public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
+@Repository
+@Transactional(readOnly = true)
+public interface RestaurantRepository extends BaseRepository<Restaurant> {
 }
