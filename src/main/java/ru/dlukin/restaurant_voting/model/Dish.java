@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "dish")
+@Table(name = "dish", indexes = {@Index(name = "dish_name_date_menu_idx", columnList = "name, date_menu, restaurant_id",
+        unique = true)})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -1,8 +1,14 @@
 #  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %highlight(%-5level) %cyan(%class{50}.%M:%L) - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   level:
+    org.springframework.web: DEBUG
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
+  file:
+    name: "logs/application-debug.log"
 spring:
   jpa:
     show-sql: true

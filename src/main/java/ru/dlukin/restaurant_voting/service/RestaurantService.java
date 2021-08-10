@@ -38,7 +38,7 @@ public class RestaurantService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public Restaurant findByName(String name) {

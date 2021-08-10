@@ -38,12 +38,12 @@ public class UserService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     public User findByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Not found entity with " +
-                "email " + email));
+        return repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Not found entity with email "
+                + email));
     }
 
     public User findByName(String name) {

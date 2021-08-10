@@ -40,7 +40,7 @@ public class DishService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
     List<Dish> findAllByRestaurantAndDateMenu(Restaurant restaurant, LocalDate dateVote) {

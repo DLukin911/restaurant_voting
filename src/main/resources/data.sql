@@ -1,13 +1,15 @@
 INSERT INTO USERS (NAME, EMAIL, PASSWORD)
 VALUES ('User1_Name', 'user1@gmail.com', 'password'),  --USER_ID 1
        ('User2_Name', 'user2@gmail.com', 'password'),  --USER_ID 2
-       ('User3_Name', 'admin@restaurant.ru', 'admin'); --USER_ID 3
+       ('User3_Name', 'user3@gmail.com', 'password'), --USER_ID 3
+       ('Admin1_Name', 'admin@restaurant.com', 'admin'); --USER_ID 4
 
 INSERT INTO USER_ROLE (ROLE, USER_ID)
 VALUES ('USER', 1),
        ('USER', 2),
        ('USER', 3),
-       ('ADMIN', 3);
+       ('ADMIN', 4),
+       ('USER', 4);
 
 INSERT INTO RESTAURANT (NAME)
 VALUES ('KFC'),       --RESTAURANT_ID 1
@@ -23,4 +25,4 @@ VALUES ('Chicken Basket', CURRENT_DATE, 250, 1), --DISH_ID 1   RESTAURANT: KFC
 INSERT INTO VOTE (RESTAURANT_ID, USER_ID)
 VALUES (2, 1), -- RESTAURANT: McDonalds   USER_EMAIL: user1@gmail.com
        (2, 2), -- RESTAURANT: McDonalds   USER_EMAIL: user2@gmail.com
-       (1, 3); -- RESTAURANT: KFC         USER_EMAIL: admin@restaurant.ru
+       (1, 3); -- RESTAURANT: KFC         USER_EMAIL: user3@gmail.com

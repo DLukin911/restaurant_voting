@@ -8,7 +8,8 @@ import ru.dlukin.restaurant_voting.model.Vote;
 import ru.dlukin.restaurant_voting.repository.VoteRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
@@ -41,11 +42,11 @@ public class VoteService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
-    public List<Vote> findAllByDateVote(Date dateVote) {
-        return repository.findAllByDateVote(dateVote);
+    public List<Vote> findAllByDateVote(LocalDate dateVote) {
+        return repository.findAllByDateVoteBetween(dateVote.atTime(LocalTime.MIN), dateVote.atTime(LocalTime.MAX));
     }
 
     public List<Vote> findAllByRestaurant(Restaurant restaurant) {
@@ -56,7 +57,8 @@ public class VoteService {
         return repository.findAllByUser(user);
     }
 
-    public List<Vote> findAllByRestaurantAndDateVote(Restaurant restaurant, Date dateVote) {
-        return repository.findAllByRestaurantAndDateVote(restaurant, dateVote);
+    public List<Vote> findAllByRestaurantAndDateVote(Restaurant restaurant, LocalDate dateVote) {
+        return repository.findAllByRestaurantAndDateVoteBetween(restaurant, dateVote.atTime(LocalTime.MIN),
+                dateVote.atTime(LocalTime.MAX));
     }
 }
