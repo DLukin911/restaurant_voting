@@ -1,5 +1,6 @@
 package ru.dlukin.restaurant_voting.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.dlukin.restaurant_voting.model.Dish;
@@ -13,13 +14,10 @@ import java.util.List;
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@AllArgsConstructor
 public class DishService {
 
     private final DishRepository repository;
-
-    public DishService(DishRepository repository) {
-        this.repository = repository;
-    }
 
     public Dish create(Dish dish) {
         Assert.notNull(dish, "Dish must not be null");
@@ -49,5 +47,10 @@ public class DishService {
 
     List<Dish> findAllByRestaurant(Restaurant restaurant) {
         return repository.findAllByRestaurant(restaurant);
+    }
+
+    public Dish findByIdAndRestaurantId(int id, int restaurantId) {
+        return repository.findByIdAndRestaurantId(id, restaurantId).orElseThrow(() ->
+                new EntityNotFoundException("Not found entity with id " + id + " and restaurantId " + restaurantId));
     }
 }

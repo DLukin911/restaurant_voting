@@ -1,5 +1,7 @@
 package ru.dlukin.restaurant_voting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,10 +23,12 @@ public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Dish> dishes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Vote> votes;
 
     public Restaurant(Restaurant r) {

@@ -57,7 +57,6 @@ class VoteServiceTest {
     }
 
     @Test
-    @Transactional
     void update() {
         Vote updated = getUpdated();
         service.update(updated);

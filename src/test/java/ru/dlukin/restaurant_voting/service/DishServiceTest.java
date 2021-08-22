@@ -82,6 +82,8 @@ class DishServiceTest {
         MATCHER.assertMatch(all, dish4, dish5);
     }
 
+    //TODO Вставить тест рест+ID из сервиса
+
     @Test
     void createWithException() {
         assertThrows(ConstraintViolationException.class, () -> service.create(new Dish(null, "  ", LocalDate.now(),

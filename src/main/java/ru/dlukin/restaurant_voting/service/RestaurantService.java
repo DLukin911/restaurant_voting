@@ -1,6 +1,8 @@
 package ru.dlukin.restaurant_voting.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
@@ -11,13 +13,10 @@ import java.util.List;
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@AllArgsConstructor
 public class RestaurantService {
 
     private final RestaurantRepository repository;
-
-    public RestaurantService(RestaurantRepository repository) {
-        this.repository = repository;
-    }
 
     public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "Restaurant must not be null");

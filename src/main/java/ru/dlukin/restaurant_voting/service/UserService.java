@@ -1,23 +1,24 @@
 package ru.dlukin.restaurant_voting.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.repository.UserRepository;
+import ru.dlukin.restaurant_voting.to.UserTo;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static ru.dlukin.restaurant_voting.util.UserUtil.*;
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
-
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
 
     public User create(User user) {
         Assert.notNull(user, "User must not be null");
@@ -34,6 +35,15 @@ public class UserService {
 
     public void update(User user) {
         Assert.notNull(user, "User must not be null");
+        prepareToSave(user);
+        repository.save(user);
+    }
+
+    @Transactional
+    public void update(UserTo userTo) {
+        Assert.notNull(userTo, "UserTo must not be null");
+        User user = updateFromTo(get(userTo.getId()), userTo);
+        prepareToSave(user);
         repository.save(user);
     }
 
@@ -42,7 +52,7 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Not found entity with email "
+        return repository.findByEmailIgnoreCase(email).orElseThrow(() -> new EntityNotFoundException("Not found entity with email "
                 + email));
     }
 

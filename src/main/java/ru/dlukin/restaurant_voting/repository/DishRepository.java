@@ -7,6 +7,7 @@ import ru.dlukin.restaurant_voting.model.Restaurant;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
@@ -14,4 +15,6 @@ public interface DishRepository extends BaseRepository<Dish> {
     List<Dish> findAllByRestaurantAndDateMenu(Restaurant restaurant, LocalDate dateVote);
 
     List<Dish> findAllByRestaurant(Restaurant restaurant);
+
+    Optional <Dish> findByIdAndRestaurantId(int id, int restaurantId);
 }

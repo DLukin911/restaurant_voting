@@ -4,7 +4,9 @@ logging:
     console: "%d{HH:mm:ss.SSS} %highlight(%-5level) %cyan(%class{50}.%M:%L) - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   level:
-    org.springframework.web: DEBUG
+    root: WARN
+    ru.dlukin.restaurant_voting: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
   file:
@@ -30,3 +32,9 @@ spring:
     username: sa
     password:
   h2.console.enabled: true
+
+server.servlet:
+  encoding:
+    charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
+    enabled: true # Enable http encoding support
+    force: true
