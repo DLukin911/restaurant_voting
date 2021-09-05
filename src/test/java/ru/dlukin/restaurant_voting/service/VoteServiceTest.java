@@ -103,7 +103,7 @@ class VoteServiceTest {
         assertThrows(ConstraintViolationException.class, () -> service.create(new Vote(null, mcDonalds, null)));
         assertThrows(ConstraintViolationException.class, () -> service.create(new Vote(null, null, UserTestData.user)));
         service.create(new Vote(null, LocalDateTime.of(2021, 10, 11, 12, 15), mcDonalds, UserTestData.user));
-        assertThrows(DataIntegrityViolationException.class, () ->
-                service.create(new Vote(null, LocalDateTime.of(2021, 10, 11, 12, 15), mcDonalds, UserTestData.user)));
+        assertThrows(DataIntegrityViolationException.class, () -> service.create(new Vote(null, LocalDateTime.of(2021
+                , 10, 11, 12, 15), mcDonalds, UserTestData.user)));
     }
 }

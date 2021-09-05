@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.util.StringUtils;
 import ru.dlukin.restaurant_voting.model.Role;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
@@ -19,8 +16,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.dlukin.restaurant_voting.testdata.UserTestData.*;
-import static ru.dlukin.restaurant_voting.util.UserUtil.PASSWORD_ENCODER;
-import static ru.dlukin.restaurant_voting.util.UserUtil.prepareToSave;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -105,11 +100,11 @@ class UserServiceTest {
                 "password", Role.USER)));
         assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "mail@yandex.ru",
                 "password", Role.USER)));
-        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password",
-                Role.USER)));
-        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru",
-                "  ", Role.USER)));
-        assertThrows(DataIntegrityViolationException.class, () -> service.create(new User(null, "User1_Name", "user1@gmail.com",
-                "password", Role.USER)));
+        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password"
+                , Role.USER)));
+        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru"
+                , "  ", Role.USER)));
+        assertThrows(DataIntegrityViolationException.class, () -> service.create(new User(null, "User1_Name", "user1" +
+                "@gmail.com", "password", Role.USER)));
     }
 }

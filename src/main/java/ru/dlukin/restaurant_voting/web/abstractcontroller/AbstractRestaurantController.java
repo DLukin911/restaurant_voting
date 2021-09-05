@@ -3,14 +3,11 @@ package ru.dlukin.restaurant_voting.web.abstractcontroller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.dlukin.restaurant_voting.model.Restaurant;
-import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.service.RestaurantService;
-import ru.dlukin.restaurant_voting.to.UserTo;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static ru.dlukin.restaurant_voting.util.UserUtil.createNewFromTo;
-import static ru.dlukin.restaurant_voting.util.UserUtil.prepareToSave;
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.assureIdConsistent;
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNew;
 
@@ -25,10 +22,15 @@ public abstract class AbstractRestaurantController {
         return service.getAll();
     }
 
-   /* public List<Restaurant> getAllbyDate() {
-        log.info("getAll");
-        return service.getAll();
-    }*/
+    public List<Restaurant> getAllByDate(LocalDate dateVote) {
+        log.info("getAll by Date");
+        return service.getAllByDate(dateVote);
+    }
+
+    public List<Restaurant> getAllByToday() {
+        log.info("getAll by Today");
+        return service.getAllByToday();
+    }
 
     public Restaurant get(int id) {
         log.info("get {}", id);
@@ -52,8 +54,8 @@ public abstract class AbstractRestaurantController {
         service.update(restaurant);
     }
 
-    public Restaurant findByName(String name) {
-        log.info("findByName {}", name);
-        return service.findByName(name);
+    public Restaurant getByName(String name) {
+        log.info("getByName {}", name);
+        return service.getByName(name);
     }
 }

@@ -9,6 +9,7 @@ import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,7 +35,7 @@ class RestaurantServiceTest {
     @Test
     void get() {
         Restaurant restaurantFromDatabase = service.get(KFC_ID);
-        MATCHER.assertMatch(kfc, restaurantFromDatabase);
+        MATCHER.assertMatch(restaurantFromDatabase, kfc);
     }
 
     @Test
@@ -67,9 +68,21 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void findByName() {
-        Restaurant restaurantFromDatabase = service.findByName("KFC");
-        MATCHER.assertMatch(kfc, restaurantFromDatabase);
+    void getByName() {
+        Restaurant restaurantFromDatabase = service.getByName("KFC");
+        MATCHER.assertMatch(restaurantFromDatabase, kfc);
+    }
+
+    @Test
+    void getAllByToday() {
+        List<Restaurant> restaurantsFromDatabase = service.getAllByToday();
+        MATCHER.assertMatch(restaurantsFromDatabase, List.of(kfc, mcDonalds));
+    }
+
+    @Test
+    void getAllByDate() {
+        List<Restaurant> restaurantsFromDatabase = service.getAllByDate(LocalDate.of(2021, 9, 1));
+        MATCHER.assertMatch(restaurantsFromDatabase, List.of(burgerKing));
     }
 
     @Test

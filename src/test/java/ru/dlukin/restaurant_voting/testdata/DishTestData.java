@@ -27,7 +27,7 @@ public class DishTestData {
     public static Dish getUpdated() {
         Dish updated = new Dish(dish1);
         updated.setName("UpdatedNameDish");
-        updated.setDateMenu(LocalDate.MAX);
+        updated.setDateVote(LocalDate.MAX);
         updated.setPrice(1000);
         updated.setRestaurant(mcDonalds);
         return updated;

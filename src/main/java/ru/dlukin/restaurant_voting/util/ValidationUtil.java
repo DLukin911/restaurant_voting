@@ -12,7 +12,7 @@ import java.util.Set;
 @UtilityClass
 public class ValidationUtil {
 
-    private static final Validator validator;     // DELETE VALIDATOR?
+    private static final Validator validator;
 
     static {
         //  From Javadoc: implementations are thread-safe and instances are typically cached and reused.
@@ -57,6 +57,10 @@ public class ValidationUtil {
 
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
+    }
+
+    public static void checkNotFoundWithIdAndRestaurantId(boolean found, int id, int restaurantId) {
+        checkNotFound(found, "id=" + id + " and Restaurant id=" + restaurantId);
     }
 
     public static <T> T checkNotFound(T object, String msg) {

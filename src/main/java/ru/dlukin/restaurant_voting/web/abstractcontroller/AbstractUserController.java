@@ -46,19 +46,24 @@ public abstract class AbstractUserController {
         service.delete(id);
     }
 
-    public void update(UserTo userTo, int id) {
-        log.info("update {} with id={}", userTo, id);
-        assureIdConsistent(userTo, id);
-        service.update(userTo);
+    public void update(User user, int id) {
+        log.info("update {} with id={}", user, id);
+        assureIdConsistent(user, id);
+        service.update(user);
     }
 
-    public User findByMail(String email) {
+    public void update(UserTo userTo, int id) {
+        User user = createNewFromTo(userTo);
+        update(user, id);
+    }
+
+    public User getByMail(String email) {
         log.info("findByEmail {}", email);
         return service.findByEmail(email);
     }
 
-    public User findByName(String name) {
-        log.info("findByName {}", name);
+    public User getByName(String name) {
+        log.info("getByName {}", name);
         return service.findByName(name);
     }
 }

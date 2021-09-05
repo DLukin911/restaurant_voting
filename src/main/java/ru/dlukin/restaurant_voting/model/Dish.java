@@ -8,22 +8,22 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "dish", indexes = {@Index(name = "dish_name_date_menu_idx", columnList = "name, date_menu, restaurant_id",
-        unique = true)})
+@Table(name = "dish", indexes = {@Index(name = "dish_name_date_menu_idx", columnList = "name, date_vote, " +
+        "restaurant_id", unique = true)})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class Dish extends AbstractNamedEntity {
 
-    @Column(name = "date_menu", nullable = false)
+    @Column(name = "date_vote", nullable = false)
     @NotNull
-    private LocalDate dateMenu;
+    private LocalDate dateVote;
 
     @Column(name = "price", nullable = false)
     @NotNull
     @Range(min = 1, max = 5000)
-    private Integer price;
+    private int price;
 
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
@@ -31,12 +31,12 @@ public class Dish extends AbstractNamedEntity {
     private Restaurant restaurant;
 
     public Dish(Dish d) {
-        this(d.id, d.name, d.dateMenu, d.price, d.restaurant);
+        this(d.id, d.name, d.dateVote, d.price, d.restaurant);
     }
 
-    public Dish(Integer id, String name, LocalDate dateMenu, Integer price, Restaurant restaurant) {
+    public Dish(Integer id, String name, LocalDate dateVote, Integer price, Restaurant restaurant) {
         super(id, name);
-        this.dateMenu = dateMenu;
+        this.dateVote = dateVote;
         this.price = price;
         this.restaurant = restaurant;
     }

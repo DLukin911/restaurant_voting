@@ -27,7 +27,8 @@ public class VoteService {
     }
 
     public Vote get(int id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found entity with id " + id));
+        return repository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Not found entity with id " + id));
     }
 
     public List<Vote> getAll() {

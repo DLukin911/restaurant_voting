@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@UtilityClass  //TODO: проверить использование методов + тест 10 урок JSONtest
+@UtilityClass
 public class JsonUtil {
     private static ObjectMapper mapper;
 

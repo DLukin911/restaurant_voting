@@ -13,11 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import ru.dlukin.restaurant_voting.web.AuthUser;
 import ru.dlukin.restaurant_voting.model.Role;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.repository.UserRepository;
+import ru.dlukin.restaurant_voting.web.AuthUser;
 
 import java.util.Optional;
 

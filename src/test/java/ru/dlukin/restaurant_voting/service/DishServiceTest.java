@@ -16,7 +16,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.dlukin.restaurant_voting.testdata.DishTestData.*;
 import static ru.dlukin.restaurant_voting.testdata.RestaurantTestData.kfc;
-import static ru.dlukin.restaurant_voting.testdata.RestaurantTestData.mcDonalds;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -27,7 +26,7 @@ class DishServiceTest {
 
     @Test
     void create() {
-        Dish created = service.create(getNew());
+        Dish created = service.create(getNew(), 1);
         int newId = created.id();
         Dish newDish = getNew();
         newDish.setId(newId);
@@ -38,7 +37,7 @@ class DishServiceTest {
     @Test
     void get() {
         Dish dishFromDatabase = service.get(DISH_ID);
-        MATCHER.assertMatch(dish1, dishFromDatabase);
+        MATCHER.assertMatch(dishFromDatabase, dish1);
     }
 
     @Test
@@ -48,51 +47,47 @@ class DishServiceTest {
 
     @Test
     void getAll() {
-        List<Dish> all = service.getAll();
-        MATCHER.assertMatch(all, dish1, dish2, dish3, dish4, dish5);
+        List<Dish> all = service.getAllByRestaurantId(1);
+        MATCHER.assertMatch(all, dish1, dish2, dish3);
     }
 
     @Test
     void update() {
         Dish updated = getUpdated();
-        service.update(updated);
+        service.update(updated, 2);
         MATCHER.assertMatch(service.get(DISH_ID), getUpdated());
     }
 
     @Test
     void delete() {
-        service.delete(DISH_ID);
+        service.delete(DISH_ID, 1);
         assertThrows(EntityNotFoundException.class, () -> service.get(DISH_ID));
     }
 
     @Test
     void deletedNotFound() {
-        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND_ID, 1));
     }
 
     @Test
-    void findAllByRestaurantAndDateMenu() {
-        List<Dish> all = service.findAllByRestaurantAndDateMenu(kfc, LocalDate.now());
+    void getAllByRestaurantIdAndDateVote() {
+        List<Dish> all = service.getAllByRestaurantIdAndDateVote(1, LocalDate.now());
         MATCHER.assertMatch(all, dish1, dish2, dish3);
     }
 
     @Test
-    void findAllByRestaurant() {
-        List<Dish> all = service.findAllByRestaurant(mcDonalds);
-        MATCHER.assertMatch(all, dish4, dish5);
+    void getByIdAndRestaurantId() {
+        Dish all = service.getByIdAndRestaurantId(4, 2);
+        MATCHER.assertMatch(all, dish4);
     }
-
-    //TODO Вставить тест рест+ID из сервиса
 
     @Test
     void createWithException() {
         assertThrows(ConstraintViolationException.class, () -> service.create(new Dish(null, "  ", LocalDate.now(),
-                150, kfc)));
+                150, kfc), 1));
         assertThrows(ConstraintViolationException.class, () -> service.create(new Dish(null, "Egg", LocalDate.now(),
-                0, kfc)));
-        assertThrows(ConstraintViolationException.class, () -> service.create(new Dish(null, "Egg", LocalDate.now(),
-                150, null)));
+                0, kfc), 1));
         assertThrows(DataIntegrityViolationException.class, () -> service.create(new Dish(null, "Chicken Basket",
-                LocalDate.now(), 250, kfc)));
+                LocalDate.now(), 250, kfc), 1));
     }
 }

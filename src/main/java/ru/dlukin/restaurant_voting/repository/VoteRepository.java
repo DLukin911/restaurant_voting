@@ -18,5 +18,6 @@ public interface VoteRepository extends BaseRepository<Vote> {
 
     List<Vote> findAllByUser(User user);
 
-    List<Vote> findAllByRestaurantAndDateVoteBetween(Restaurant restaurant, LocalDateTime startDate, LocalDateTime endDate);
+    List<Vote> findAllByRestaurantAndDateVoteBetween(Restaurant restaurant, LocalDateTime startDate,
+                                                     LocalDateTime endDate);
 }

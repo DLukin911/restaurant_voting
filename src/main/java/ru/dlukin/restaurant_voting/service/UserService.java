@@ -11,7 +11,8 @@ import ru.dlukin.restaurant_voting.to.UserTo;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static ru.dlukin.restaurant_voting.util.UserUtil.*;
+import static ru.dlukin.restaurant_voting.util.UserUtil.prepareToSave;
+import static ru.dlukin.restaurant_voting.util.UserUtil.updateFromTo;
 import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -26,7 +27,8 @@ public class UserService {
     }
 
     public User get(int id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not found entity with id " + id));
+        return repository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Not found entity with id " + id));
     }
 
     public List<User> getAll() {
@@ -52,12 +54,12 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return repository.findByEmailIgnoreCase(email).orElseThrow(() -> new EntityNotFoundException("Not found entity with email "
-                + email));
+        return repository.findByEmailIgnoreCase(email).orElseThrow(() ->
+                new EntityNotFoundException("Not found entity with email " + email));
     }
 
     public User findByName(String name) {
-        return repository.findByName(name).orElseThrow(() -> new EntityNotFoundException("Not found entity with name "
-                + name));
+        return repository.findByName(name).orElseThrow(() ->
+                new EntityNotFoundException("Not found entity with name " + name));
     }
 }

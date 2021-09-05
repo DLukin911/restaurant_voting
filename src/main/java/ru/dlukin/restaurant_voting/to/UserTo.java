@@ -4,8 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 import ru.dlukin.restaurant_voting.HasIdAndEmail;
-import ru.dlukin.restaurant_voting.model.User;
-import ru.dlukin.restaurant_voting.to.NamedTo;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

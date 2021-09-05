@@ -3,6 +3,7 @@ package ru.dlukin.restaurant_voting;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
+import ru.dlukin.restaurant_voting.util.JsonUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -58,7 +59,7 @@ public class MatcherFactory {
             iterableAssertion.accept(actual, expected);
         }
 
-      /*  public ResultMatcher contentJson(T expected) {
+        public ResultMatcher contentJson(T expected) {
             return result -> assertMatch(JsonUtil.readValue(getContent(result), clazz), expected);
         }
 
@@ -77,6 +78,6 @@ public class MatcherFactory {
 
         private static String getContent(MvcResult result) throws UnsupportedEncodingException {
             return result.getResponse().getContentAsString();
-        }*/
+        }
     }
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"restaurant"})    //TODO: StackowerflowError in tests
+@ToString(callSuper = true, exclude = {"restaurant"})
 public class Vote extends AbstractBaseEntity {
 
     @Column(name = "date_vote", nullable = false, columnDefinition = "timestamp default now()")

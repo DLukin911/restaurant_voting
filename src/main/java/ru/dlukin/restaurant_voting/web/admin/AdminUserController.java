@@ -33,9 +33,11 @@ public class AdminUserController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@RequestBody UserTo userTo) {
         User created = super.create(userTo);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
+        URI uriOfNewResource =
+                ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path(REST_URL + "/{id}")
+                        .buildAndExpand(created.getId())
+                        .toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
@@ -55,13 +57,13 @@ public class AdminUserController extends AbstractUserController {
 
     @Override
     @GetMapping("/by-mail")
-    public User findByMail(@RequestParam String email) {
-        return super.findByMail(email);
+    public User getByMail(@RequestParam String email) {
+        return super.getByMail(email);
     }
 
     @Override
     @GetMapping("/by-name")
-    public User findByName(@RequestParam String name) {
-        return super.findByName(name);
+    public User getByName(@RequestParam String name) {
+        return super.getByName(name);
     }
 }
