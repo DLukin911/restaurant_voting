@@ -1,2 +1,3 @@
-API documentation:
+API documentation by Swagger:
+http://localhost:8080/swagger-ui/
 
