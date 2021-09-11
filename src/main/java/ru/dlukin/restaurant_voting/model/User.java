@@ -1,5 +1,6 @@
 package ru.dlukin.restaurant_voting.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -46,6 +47,7 @@ public class User extends AbstractNamedEntity implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")    //https://stackoverflow.com/a/62848296/548473
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private Set<Role> roles;
 
     public User(User u) {

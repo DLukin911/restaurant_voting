@@ -2,14 +2,18 @@ INSERT INTO USERS (NAME, EMAIL, PASSWORD)
 VALUES ('User1_Name', 'user1@gmail.com', '{noop}password'),  --USER_ID 1
        ('User2_Name', 'user2@gmail.com', '{noop}password'),  --USER_ID 2
        ('User3_Name', 'user3@gmail.com', '{noop}password'), --USER_ID 3
-       ('Admin1_Name', 'admin@restaurant.com', '{noop}admin'); --USER_ID 4
+       ('Admin1_Name', 'admin@restaurant.com', '{noop}admin'), --USER_ID 4
+       ('UserForTest_Name', 'userfortest@gmail.com', '{noop}password'),--USER_ID 5
+       ('UserForTestAPI_Name', 'userfortestapi@gmail.com', '{noop}password'); --USER_ID 6
 
 INSERT INTO USER_ROLE (ROLE, USER_ID)
 VALUES ('USER', 1),
        ('USER', 2),
        ('USER', 3),
        ('ADMIN', 4),
-       ('USER', 4);
+       ('USER', 4),
+       ('USER', 5),
+       ('USER', 6);
 
 INSERT INTO RESTAURANT (NAME)
 VALUES ('KFC'),       --RESTAURANT_ID 1

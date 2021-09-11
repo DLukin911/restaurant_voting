@@ -1,7 +1,6 @@
 package ru.dlukin.restaurant_voting.web.user;
 
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class UserAccountController extends AbstractUserController {
 
     static final String REST_URL = "/api/user/account";
 
-    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(@AuthenticationPrincipal AuthUser authUser) {
         return super.get(authUser.id());
     }
@@ -33,7 +32,7 @@ public class UserAccountController extends AbstractUserController {
         super.delete(authUser.id());
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> registration(@RequestBody UserTo userTo) {
         User created = super.create(userTo);
         URI uriOfNewResource =
@@ -44,7 +43,7 @@ public class UserAccountController extends AbstractUserController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
         User oldUser = authUser.getUser();

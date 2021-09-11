@@ -10,13 +10,13 @@ import ru.dlukin.restaurant_voting.model.Vote;
 import ru.dlukin.restaurant_voting.testdata.UserTestData;
 import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.dlukin.restaurant_voting.testdata.RestaurantTestData.kfc;
 import static ru.dlukin.restaurant_voting.testdata.RestaurantTestData.mcDonalds;
 import static ru.dlukin.restaurant_voting.testdata.VoteTestData.*;
 
@@ -30,24 +30,11 @@ class VoteServiceTest {
     @Test
     @Transactional
     void create() {
-        Vote created = service.create(getNew());
+        Vote created = service.create(kfc.getId(), UserTestData.newUserForVote);
         int newId = created.id();
         Vote newVote = getNew();
         newVote.setId(newId);
         MATCHER.assertMatch(created, newVote);
-        MATCHER.assertMatch(service.get(newId), newVote);
-    }
-
-    @Test
-    @Transactional
-    void get() {
-        Vote voteFromDatabase = service.get(VOTE_ID);
-        MATCHER.assertMatch(vote1, voteFromDatabase);
-    }
-
-    @Test
-    void getNotFound() {
-        assertThrows(EntityNotFoundException.class, () -> service.get(NOT_FOUND_ID));
     }
 
     @Test
@@ -57,16 +44,9 @@ class VoteServiceTest {
     }
 
     @Test
-    void update() {
-        Vote updated = getUpdated();
-        service.update(updated);
-        MATCHER.assertMatch(service.get(VOTE_ID), getUpdated());
-    }
-
-    @Test
     void delete() {
         service.delete(VOTE_ID);
-        assertThrows(EntityNotFoundException.class, () -> service.get(VOTE_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(VOTE_ID));
     }
 
     @Test
@@ -75,35 +55,26 @@ class VoteServiceTest {
     }
 
     @Test
-    void findAllByDateVote() {
-        List<Vote> all = service.findAllByDateVote(LocalDate.now());
-        MATCHER.assertMatch(all, vote1, vote2, vote3);
-    }
-
-    @Test
-    void findAllByRestaurant() {
-        List<Vote> all = service.findAllByRestaurant(mcDonalds);
+    void getAllByRestaurant() {
+        List<Vote> all = service.getAllByRestaurant(mcDonalds.getId());
         MATCHER.assertMatch(all, vote1, vote2);
     }
 
     @Test
-    void findAllByUser() {
-        List<Vote> all = service.findAllByUser(UserTestData.user);
-        MATCHER.assertMatch(all, vote1);
+    void getAllByRestaurantAndDateVote() {
+        List<Vote> all = service.getAllByRestaurantAndDateVote(mcDonalds.getId(), LocalDate.now());
+        MATCHER.assertMatch(all, vote1, vote2);
     }
 
     @Test
-    void findAllByRestaurantAndDateVote() {
-        List<Vote> all = service.findAllByRestaurantAndDateVote(mcDonalds, LocalDate.now());
-        MATCHER.assertMatch(all, vote1, vote2);
+    void getRatingByDate() {
+        Map<String, Integer> getRatingByDate = service.getRatingByDate(LocalDate.now());
+      //  MATCHER.assertMatch(getRatingByDate, voteMapResult);  //TODO: Как правильно написать данный MATCHER?
     }
 
     @Test
     void createWithException() {
-        assertThrows(ConstraintViolationException.class, () -> service.create(new Vote(null, mcDonalds, null)));
-        assertThrows(ConstraintViolationException.class, () -> service.create(new Vote(null, null, UserTestData.user)));
-        service.create(new Vote(null, LocalDateTime.of(2021, 10, 11, 12, 15), mcDonalds, UserTestData.user));
-        assertThrows(DataIntegrityViolationException.class, () -> service.create(new Vote(null, LocalDateTime.of(2021
-                , 10, 11, 12, 15), mcDonalds, UserTestData.user)));
+        assertThrows(ConstraintViolationException.class, () -> service.create(mcDonalds.getId(), null));
+        assertThrows(DataIntegrityViolationException.class, () -> service.create(0, UserTestData.newUserForVote));
     }
 }

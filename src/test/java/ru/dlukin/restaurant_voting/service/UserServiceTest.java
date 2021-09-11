@@ -54,7 +54,7 @@ class UserServiceTest {
     @Test
     void getAll() {
         List<User> all = service.getAll();
-        MATCHER.assertMatch(all, user, user2, user3, admin);
+        MATCHER.assertMatch(all, user, user2, user3, admin, newUserForVote, newUserForTestApi);
     }
 
     @Test
@@ -100,11 +100,11 @@ class UserServiceTest {
                 "password", Role.USER)));
         assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "mail@yandex.ru",
                 "password", Role.USER)));
-        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password"
-                , Role.USER)));
-        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru"
-                , "  ", Role.USER)));
-        assertThrows(DataIntegrityViolationException.class, () -> service.create(new User(null, "User1_Name", "user1" +
-                "@gmail.com", "password", Role.USER)));
+        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password",
+                Role.USER)));
+        assertThrows(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru",
+                "  ", Role.USER)));
+        assertThrows(DataIntegrityViolationException.class, () -> service.create(new User(null, "User1_Name", "user1@gmail.com",
+                "password", Role.USER)));
     }
 }

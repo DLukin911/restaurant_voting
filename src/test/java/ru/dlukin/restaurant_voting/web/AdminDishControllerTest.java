@@ -25,7 +25,7 @@ import static ru.dlukin.restaurant_voting.testdata.UserTestData.admin;
 @Transactional
 @WebMvcTest(AdminDishController.class)
 public class AdminDishControllerTest {
- /*   public MockMvc mockMvc;
+ /*   public MockMvc mockMvc;  //TODO: Как правильно мокнуть, чтобы тесты заработали?
 
     @Autowired
     private WebApplicationContext webApplicationContext;

@@ -46,7 +46,7 @@ class RestaurantServiceTest {
     @Test
     void getAll() {
         List<Restaurant> all = service.getAll();
-        MATCHER.assertMatch(all, kfc, mcDonalds);
+        MATCHER.assertMatch(all, kfc, mcDonalds, burgerKing);
     }
 
     @Test

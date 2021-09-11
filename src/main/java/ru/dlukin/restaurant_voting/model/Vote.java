@@ -1,5 +1,6 @@
 package ru.dlukin.restaurant_voting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,11 +20,12 @@ public class Vote extends AbstractBaseEntity {
 
     @Column(name = "date_vote", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    private LocalDateTime dateVote = LocalDateTime.now();
+    private LocalDateTime dateTimeVote = LocalDateTime.now();
 
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
     @JoinColumn(name = "user_id", nullable = false)
@@ -33,16 +35,16 @@ public class Vote extends AbstractBaseEntity {
     private User user;
 
     public Vote(Vote v) {
-        this(v.id, v.dateVote, v.restaurant, v.user);
+        this(v.id, v.dateTimeVote, v.restaurant, v.user);
     }
 
     public Vote(Integer id, Restaurant restaurant, User user) {
         this(id, LocalDateTime.now(), restaurant, user);
     }
 
-    public Vote(Integer id, LocalDateTime dateVote, Restaurant restaurant, User user) {
+    public Vote(Integer id, LocalDateTime dateTimeVote, Restaurant restaurant, User user) {
         super(id);
-        this.dateVote = dateVote;
+        this.dateTimeVote = dateTimeVote;
         this.restaurant = restaurant;
         this.user = user;
     }
