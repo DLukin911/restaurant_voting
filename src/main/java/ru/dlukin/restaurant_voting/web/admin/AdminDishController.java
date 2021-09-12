@@ -11,6 +11,7 @@ import ru.dlukin.restaurant_voting.model.Dish;
 import ru.dlukin.restaurant_voting.service.DishService;
 import ru.dlukin.restaurant_voting.to.DishTo;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -43,13 +44,13 @@ public class AdminDishController {
 
     @PutMapping(value = "{restaurantId}/dishes/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody DishTo dishTo, @PathVariable int restaurantId, @PathVariable int id) {
+    public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int restaurantId, @PathVariable int id) {
         assureIdConsistent(dishTo, id);
         service.update(updateFromTo(dishTo), restaurantId);
     }
 
     @PostMapping(value = "{restaurantId}/dishes", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createDish(@RequestBody DishTo dishTo, @PathVariable int restaurantId) {
+    public ResponseEntity<Dish> createDish(@Valid @RequestBody DishTo dishTo, @PathVariable int restaurantId) {
         checkNew(dishTo);
         Dish created = service.create(createNewFromTo(dishTo), restaurantId);
         URI uriOfNewResource =

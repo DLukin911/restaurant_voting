@@ -10,6 +10,7 @@ import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.to.RestaurantTo;
 import ru.dlukin.restaurant_voting.web.abstractcontroller.AbstractRestaurantController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -48,7 +49,7 @@ public class AdminRestaurantController extends AbstractRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody RestaurantTo restaurantTo) {
+    public ResponseEntity<Restaurant> createRestaurant(@Valid @RequestBody RestaurantTo restaurantTo) {
         Restaurant created = super.create(createNewFromTo(restaurantTo));
         URI uriOfNewResource =
                 ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -67,7 +68,7 @@ public class AdminRestaurantController extends AbstractRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody RestaurantTo restaurantTo, @PathVariable int id) {
+    public void update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable int id) {
         super.update(updateFromTo(restaurantTo), id);
     }
 

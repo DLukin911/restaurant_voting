@@ -64,13 +64,4 @@ public class VoteService {
         return voteRepository.findAllByRestaurantIdAndDateTimeVoteBetween(restaurantId,
                 dateVote.atTime(LocalTime.MIN), dateVote.atTime(LocalTime.MAX));
     }
-
-    public Map<String, Integer> getRatingByDate(LocalDate dateVote) {
-        List<Restaurant> restaurantList = restaurantRepository.findAllByDateVote(dateVote);
-        Map<String, Integer> voteResult = new HashMap<>();
-        for (Restaurant r : restaurantList) {
-            voteResult.put(r.getName(), getAllByRestaurantAndDateVote(r.getId(), dateVote).size());
-        }
-        return voteResult;
-    }
 }

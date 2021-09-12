@@ -9,6 +9,7 @@ import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.to.UserTo;
 import ru.dlukin.restaurant_voting.web.abstractcontroller.AbstractUserController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createUser(@RequestBody UserTo userTo) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserTo userTo) {
         User created = super.create(userTo);
         URI uriOfNewResource =
                 ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -51,7 +52,7 @@ public class AdminUserController extends AbstractUserController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody UserTo userTo, @PathVariable int id) {
+    public void update(@Valid @RequestBody UserTo userTo, @PathVariable int id) {
         super.update(userTo, id);
     }
 

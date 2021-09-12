@@ -10,7 +10,6 @@ import ru.dlukin.restaurant_voting.service.VoteService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = AdminVoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,11 +35,5 @@ public class AdminVoteController {
     public List<Vote> getAllByRestaurantAndDateVote(@RequestParam int restaurantId,
                                                     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateVote) {
         return voteService.getAllByRestaurantAndDateVote(restaurantId, dateVote);
-    }
-
-    @GetMapping(value = "/today-rating")
-    @ResponseStatus(value = HttpStatus.OK)
-    public Map<String, Integer> getRatingByDate() {
-        return voteService.getRatingByDate(LocalDate.now());
     }
 }

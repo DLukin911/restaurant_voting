@@ -13,7 +13,6 @@ import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.dlukin.restaurant_voting.testdata.RestaurantTestData.kfc;
@@ -64,12 +63,6 @@ class VoteServiceTest {
     void getAllByRestaurantAndDateVote() {
         List<Vote> all = service.getAllByRestaurantAndDateVote(mcDonalds.getId(), LocalDate.now());
         MATCHER.assertMatch(all, vote1, vote2);
-    }
-
-    @Test
-    void getRatingByDate() {
-        Map<String, Integer> getRatingByDate = service.getRatingByDate(LocalDate.now());
-      //  MATCHER.assertMatch(getRatingByDate, voteMapResult);  //TODO: Как правильно написать данный MATCHER?
     }
 
     @Test
