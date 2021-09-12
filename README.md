@@ -1,3 +1,4 @@
+# Restaurant voting system
 ## Task
 
 Design and implement a REST API using Hibernate/Spring/Spring-Boot without frontend.
@@ -26,6 +27,17 @@ Or package it then run it as a Java application
 mvn package
 java -jar target/restaurant_voting-{VERSION}.jar
 ```
-You can view the api documentation in swagger-ui by pointing to
+You can view the API documentation in swagger-ui by pointing to
 http://localhost:8080/swagger-ui/
 
+## Credentials:
+```
+LOGIN                        PASSWORD
+
+admin@restaurant.com         admin
+user1@gmail.com              password
+user2@gmail.com              password
+user3@gmail.com              password
+userfortest@gmail.com        password
+userfortestapi@gmail.com     password
+```
