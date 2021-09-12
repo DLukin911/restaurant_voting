@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
 
+    @Override
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> {

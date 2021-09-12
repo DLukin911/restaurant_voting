@@ -1,6 +1,6 @@
-Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) without frontend.
+##Task
 
-The task is:
+Design and implement a REST API using Hibernate/Spring/Spring-Boot without frontend.
 
 Build a voting system for deciding where to have lunch.
 
@@ -10,11 +10,22 @@ Build a voting system for deciding where to have lunch.
 * Users can vote on which restaurant they want to have lunch at
 * Only one vote counted per user
 * If user votes again the same day:
-1) If it is before 11:00 we assume that he changed his mind.
-2) If it is after 11:00 then it is too late, vote can't be changed
+    * If it is before 11:00 we assume that he changed his mind.
+    * If it is after 11:00 then it is too late, vote can't be changed.
 
 Each restaurant provides a new menu each day.
 
-API documentation by Swagger:
+## Overview
+
+Start your server as a simple Spring-Boot application
+```
+mvn spring-boot:run
+```
+Or package it then run it as a Java application
+```
+mvn package
+java -jar target/restaurant_voting-{VERSION}.jar
+```
+You can view the api documentation in swagger-ui by pointing to
 http://localhost:8080/swagger-ui/
 
