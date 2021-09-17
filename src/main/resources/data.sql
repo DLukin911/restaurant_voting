@@ -26,7 +26,7 @@ VALUES ('Chicken Basket', CURRENT_DATE, 250, 1), --DISH_ID 1   RESTAURANT: KFC
        ('Sandwich', CURRENT_DATE, 200, 1),       --DISH_ID 3   RESTAURANT: KFC
        ('Big Mac', CURRENT_DATE, 170, 2),        --DISH_ID 4   RESTAURANT: McDonalds
        ('Cheeseburger', CURRENT_DATE, 80, 2),    --DISH_ID 5   RESTAURANT: McDonalds
-       ('Burger', {ts '2021-09-01 18:00:00.00'}, 100, 3);  --DISH_ID 6   RESTAURANT: BurgerKing
+       ('Burger', {ts '2021-09-01'}, 100, 3);  --DISH_ID 6   RESTAURANT: BurgerKing
 
 INSERT INTO VOTE (RESTAURANT_ID, USER_ID)
 VALUES (2, 1), -- RESTAURANT: McDonalds   USER_EMAIL: user1@gmail.com

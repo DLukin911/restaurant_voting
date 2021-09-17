@@ -1,42 +1,33 @@
 package ru.dlukin.restaurant_voting.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurant")
+@Table(name = "restaurant", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"dishes"})
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OrderBy("name ASC")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonManagedReference
     private List<Dish> dishes;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Vote> votes;
-
     public Restaurant(Restaurant r) {
-        this(r.id, r.name, r.dishes, r.votes);
+        this(r.id, r.name, r.dishes);
     }
 
-    public Restaurant(Integer id, String name, List<Dish> dishes, List<Vote> votes) {
+    public Restaurant(Integer id, String name, List<Dish> dishes) {
         super(id, name);
         this.dishes = dishes;
-        this.votes = votes;
     }
 }

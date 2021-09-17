@@ -1,11 +1,13 @@
 package ru.dlukin.restaurant_voting.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
 import ru.dlukin.restaurant_voting.HasId;
+import ru.dlukin.restaurant_voting.util.View;
 
 import javax.persistence.*;
 
@@ -20,6 +22,7 @@ public abstract class AbstractBaseEntity implements Persistable<Integer>, HasId 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(View.REST.class)
     protected Integer id;
 
     // doesn't work for hibernate lazy proxy

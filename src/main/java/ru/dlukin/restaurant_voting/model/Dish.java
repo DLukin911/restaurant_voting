@@ -1,5 +1,6 @@
 package ru.dlukin.restaurant_voting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
@@ -28,6 +29,7 @@ public class Dish extends AbstractNamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @ManyToOne
+    @JsonBackReference
     private Restaurant restaurant;
 
     public Dish(Dish d) {

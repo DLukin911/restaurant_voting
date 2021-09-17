@@ -1,12 +1,12 @@
 package ru.dlukin.restaurant_voting.util;
 
-
 import lombok.experimental.UtilityClass;
 import ru.dlukin.restaurant_voting.HasId;
 import ru.dlukin.restaurant_voting.util.exception.IllegalRequestDataException;
 import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 
 import javax.validation.*;
+import java.util.Optional;
 import java.util.Set;
 
 @UtilityClass
@@ -23,7 +23,7 @@ public class ValidationUtil {
 
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
-            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must be new (id=null)");
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must be new (id = null)");
         }
     }
 
@@ -32,13 +32,13 @@ public class ValidationUtil {
         if (bean.isNew()) {
             bean.setId(id);
         } else if (bean.id() != id) {
-            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id=" + id);
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id = " + id);
         }
     }
 
     public static void checkModification(int count, int id) {
         if (count == 0) {
-            throw new NotFoundException("Entity with id=" + id + " not found");
+            throw new NotFoundException("Entity with id = " + id + " not found");
         }
     }
 
@@ -56,11 +56,11 @@ public class ValidationUtil {
     }
 
     public static void checkNotFoundWithId(boolean found, int id) {
-        checkNotFound(found, "id=" + id);
+        checkNotFound(found, "id = " + id);
     }
 
     public static void checkNotFoundWithIdAndRestaurantId(boolean found, int id, int restaurantId) {
-        checkNotFound(found, "id=" + id + " and Restaurant id=" + restaurantId);
+        checkNotFound(found, "id = " + id + " and Restaurant id = " + restaurantId);
     }
 
     public static <T> T checkNotFound(T object, String msg) {
@@ -72,5 +72,10 @@ public class ValidationUtil {
         if (!found) {
             throw new NotFoundException("Not found entity with " + msg);
         }
+    }
+
+    public static <T> T checkNotFoundOptional(Optional<T> object, String msg) {
+        return object.orElseThrow((() ->
+                new NotFoundException("Not found entity with " + msg)));
     }
 }

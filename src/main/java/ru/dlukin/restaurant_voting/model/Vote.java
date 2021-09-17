@@ -26,6 +26,7 @@ public class Vote extends AbstractBaseEntity {
     @NotNull
     @ManyToOne
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @JoinColumn(name = "user_id", nullable = false)

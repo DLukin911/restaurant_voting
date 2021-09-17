@@ -6,11 +6,10 @@ import org.springframework.util.Assert;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
+import static ru.dlukin.restaurant_voting.util.ValidationUtil.*;
 
 @Service
 @AllArgsConstructor
@@ -23,15 +22,6 @@ public class RestaurantService {
         return repository.save(restaurant);
     }
 
-    public Restaurant get(int id) {
-        return repository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Not found entity with id " + id));
-    }
-
-    public List<Restaurant> getAll() {
-        return repository.findAll();
-    }
-
     public void update(Restaurant restaurant) {
         Assert.notNull(restaurant, "Restaurant must not be null");
         repository.save(restaurant);
@@ -41,9 +31,16 @@ public class RestaurantService {
         checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
+    public Restaurant get(int id) {
+        return checkNotFoundOptional(repository.findById(id), "id = " + id);
+    }
+
+    public List<Restaurant> getAll() {
+        return repository.findAll();
+    }
+
     public Restaurant getByName(String name) {
-        return repository.findByName(name).orElseThrow(() ->
-                new EntityNotFoundException("Not found entity with name " + name));
+        return checkNotFoundOptional(repository.findByName(name), "name = " + name);
     }
 
     public List<Restaurant> getAllByDate(LocalDate dateVote) {

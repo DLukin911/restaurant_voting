@@ -1,9 +1,11 @@
 package ru.dlukin.restaurant_voting.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.dlukin.restaurant_voting.util.View;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -19,6 +21,7 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
     @NotBlank
     @Size(min = 2, max = 100)
     @Column(name = "name", nullable = false)
+    @JsonView(View.REST.class)
     protected String name;
 
     protected AbstractNamedEntity(Integer id, String name) {

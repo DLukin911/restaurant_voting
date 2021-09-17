@@ -8,10 +8,11 @@ import ru.dlukin.restaurant_voting.to.RestaurantTo;
 public class RestaurantUtil {
 
     public static Restaurant createNewFromTo(RestaurantTo restaurantTo) {
-        return new Restaurant(null, restaurantTo.getName(), null, null);
+        return new Restaurant(null, restaurantTo.getName(), null);
     }
 
-    public static Restaurant updateFromTo(RestaurantTo restaurantTo) {
-        return new Restaurant(restaurantTo.getId(), restaurantTo.getName(), null, null);
+    public static Restaurant updateFromTo(Restaurant restaurant, RestaurantTo restaurantTo) {
+        restaurant.setName(restaurantTo.getName());
+        return restaurant;
     }
 }

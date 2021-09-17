@@ -14,9 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AdminDishControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL = AdminDishController.REST_URL + '/';
+/*    private static final String REST_URL = AdminDishController.REST_URL + '/';
 
-   /* @Test
+    @Test
     @WithMockUser(username = "admin@restaurant.com", password = "admin", roles = "ADMIN")
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "{restaurantId}/dishes/{dish}", "1", "2"))
