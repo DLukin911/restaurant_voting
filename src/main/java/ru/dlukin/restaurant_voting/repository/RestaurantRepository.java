@@ -13,7 +13,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
-    @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.dateVote=:dateVote ORDER BY r.name ASC")
+    @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.dishes d WHERE d.date=:dateVote ORDER BY r.name ASC")
     List<Restaurant> findAllByDateVote(LocalDate dateVote);
 
     Optional<Restaurant> findByName(String name);

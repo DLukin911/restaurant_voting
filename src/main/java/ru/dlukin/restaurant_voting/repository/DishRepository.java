@@ -14,7 +14,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface DishRepository extends BaseRepository<Dish> {
 
-    List<Dish> findAllByRestaurantIdAndDateVote(int restaurantId, LocalDate dateVote);
+    List<Dish> findAllByRestaurantIdAndDate(int restaurantId, LocalDate date);
 
     List<Dish> findAllByRestaurantId(int restaurantId);
 

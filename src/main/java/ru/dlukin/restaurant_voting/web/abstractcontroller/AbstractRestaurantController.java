@@ -2,6 +2,7 @@ package ru.dlukin.restaurant_voting.web.abstractcontroller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.service.RestaurantService;
 import ru.dlukin.restaurant_voting.to.RestaurantTo;
@@ -35,6 +36,7 @@ public abstract class AbstractRestaurantController {
         service.update(restaurant);
     }
 
+    @Transactional
     public void update(RestaurantTo restaurantTo, int id) {
         assureIdConsistent(restaurantTo, id);
         Restaurant restaurant = updateFromTo(service.get(id), restaurantTo);

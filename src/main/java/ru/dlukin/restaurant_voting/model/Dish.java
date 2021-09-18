@@ -2,43 +2,40 @@ package ru.dlukin.restaurant_voting.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "dish", indexes = {@Index(name = "dish_name_date_menu_idx", columnList = "name, date_vote, " +
-        "restaurant_id", unique = true)})
+@Table(name = "dish", indexes = {@Index(name = "dish_name_date_idx", columnList = "restaurant_id, date, name",
+        unique = true)})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class Dish extends AbstractNamedEntity {
 
-    @Column(name = "date_vote", nullable = false)
+    @Column(name = "date", nullable = false)
     @NotNull
-    private LocalDate dateVote;
+    private LocalDate date;
 
     @Column(name = "price", nullable = false)
-    @NotNull
-    @Range(min = 1, max = 5000)
     private int price;
 
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Restaurant restaurant;
 
     public Dish(Dish d) {
-        this(d.id, d.name, d.dateVote, d.price, d.restaurant);
+        this(d.id, d.name, d.date, d.price, d.restaurant);
     }
 
-    public Dish(Integer id, String name, LocalDate dateVote, Integer price, Restaurant restaurant) {
+    public Dish(Integer id, String name, LocalDate date, Integer price, Restaurant restaurant) {
         super(id, name);
-        this.dateVote = dateVote;
+        this.date = date;
         this.price = price;
         this.restaurant = restaurant;
     }
