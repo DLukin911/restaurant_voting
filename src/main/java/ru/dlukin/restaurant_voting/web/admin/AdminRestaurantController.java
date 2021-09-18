@@ -70,8 +70,8 @@ public class AdminRestaurantController extends AbstractRestaurantController {
 
     @Override
     @GetMapping("/by-date")
-    public List<Restaurant> getAllByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateVote) {
-        return super.getAllByDate(dateVote);
+    public List<Restaurant> getAllByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return super.getAllByDate(date);
     }
 
     @Override

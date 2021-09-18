@@ -43,11 +43,11 @@ public class RestaurantService {
         return checkNotFoundOptional(repository.findByName(name), "name = " + name);
     }
 
-    public List<Restaurant> getAllByDate(LocalDate dateVote) {
-        return repository.findAllByDateVote(dateVote);
+    public List<Restaurant> getAllByDate(LocalDate date) {
+        return repository.findAllByDate(date);
     }
 
     public List<Restaurant> getAllByToday() {
-        return repository.findAllByDateVote(LocalDate.now());
+        return repository.findAllByDate(LocalDate.now());
     }
 }

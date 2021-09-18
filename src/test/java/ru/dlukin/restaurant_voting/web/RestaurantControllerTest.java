@@ -139,7 +139,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithMockUser(username = "admin@restaurant.com", password = "admin", roles = "ADMIN")
     void getByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "by-date?dateVote=2021-09-01"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "by-date?date=2021-09-01"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

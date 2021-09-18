@@ -63,9 +63,9 @@ public abstract class AbstractRestaurantController {
         return service.getByName(name);
     }
 
-    public List<Restaurant> getAllByDate(LocalDate dateVote) {
+    public List<Restaurant> getAllByDate(LocalDate date) {
         log.info("getAll by Date");
-        return service.getAllByDate(dateVote);
+        return service.getAllByDate(date);
     }
 
     public List<Restaurant> getAllByToday() {
