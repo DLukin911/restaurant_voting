@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Dish;
 import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 
@@ -34,6 +35,7 @@ class DishServiceTest {
     }
 
     @Test
+    @Transactional
     void update() {
         Dish updated = getUpdated();
         service.update(updated, 2);

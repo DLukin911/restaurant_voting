@@ -2,6 +2,7 @@ package ru.dlukin.restaurant_voting.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dlukin.restaurant_voting.model.Dish;
 import ru.dlukin.restaurant_voting.repository.DishRepository;
@@ -21,12 +22,14 @@ public class DishService {
 
     private final RestaurantRepository restaurantRepository;
 
+    @Transactional
     public Dish create(Dish dish, int restaurantId) {
         Assert.notNull(dish, "Dish must not be null");
         dish.setRestaurant(restaurantRepository.getById(restaurantId));
         return dishRepository.save(dish);
     }
 
+    @Transactional
     public void update(Dish dish, int restaurantId) {
         Assert.notNull(dish, "Dish must not be null");
         dish.setRestaurant(restaurantRepository.getById(restaurantId));
