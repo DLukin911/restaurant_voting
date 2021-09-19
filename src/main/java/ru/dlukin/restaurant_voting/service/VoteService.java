@@ -6,62 +6,52 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.model.Vote;
-import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
 import ru.dlukin.restaurant_voting.repository.VoteRepository;
+import ru.dlukin.restaurant_voting.util.exception.IllegalRequestDataException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundWithId;
+import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundOptional;
 
 @Service
 @AllArgsConstructor
 public class VoteService {
 
+    public static final LocalTime DEADLINE_TIME_VOTE = LocalTime.of(11, 0);
+
     private final VoteRepository voteRepository;
-    private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    public Vote create(int restaurantId, User user) {
-        LocalDateTime startToday = LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                LocalDate.now().getDayOfMonth(), 00, 00);
-        LocalDateTime endToday = LocalDateTime.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                LocalDate.now().getDayOfMonth(), 23, 59);
-
-        Vote vote = new Vote(null, restaurantRepository.getById(restaurantId), user);
-        List<Vote> oldVote = voteRepository.findAllByDateTimeVoteBetweenAndUser(startToday, endToday, user);
-        if (oldVote.isEmpty()) {
+    public Vote create(Restaurant restaurant, User user) {
+        Vote vote = new Vote(null, restaurant, user);
+        if (voteRepository.findVoteByDateVoteAndUser(LocalDate.now(), user).isEmpty()) {
             return voteRepository.save(vote);
         } else {
-            if (vote.getDateTimeVote().isBefore(LocalDateTime.of(LocalDate.now().getYear(),
-                    LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth(), 11, 00))) {
-                delete(oldVote.get(0).getId());
-                return voteRepository.save(vote);
-            }
-            throw new IllegalArgumentException("The vote has already been counted, after 11:00 you cannot change" +
-                    " the voting result");
+            throw new IllegalRequestDataException("The vote has already been counted by today");
         }
     }
 
-    public List<Vote> getAll() {
-        return voteRepository.findAll();
+    @Transactional
+    public void update(User user) {
+        Optional<Vote> vote = voteRepository.findVoteByDateVoteAndUser(LocalDate.now(), user);
+        if (vote.isEmpty()) {
+            throw new IllegalRequestDataException("Create a voice first");
+        } else if (LocalTime.now().isAfter(DEADLINE_TIME_VOTE)) {
+            throw new IllegalArgumentException("The vote has already been counted, after 11:00 you cannot change" +
+                    " the voting result");
+        }
+        voteRepository.save(vote.get());
     }
 
-    public void delete(int id) {
-        checkNotFoundWithId(voteRepository.delete(id) != 0, id);
+    public List<Vote> getAllByUser(User user) {
+        return voteRepository.findAllByUser(user);
     }
 
-    public List<Vote> getAllByRestaurant(int restaurantId) {
-        return voteRepository.findAllByRestaurantId(restaurantId);
-    }
-
-
-    public List<Vote> getAllByRestaurantAndDateVote(int restaurantId, LocalDate dateVote) {
-        return voteRepository.findAllByRestaurantIdAndDateTimeVoteBetween(restaurantId,
-                dateVote.atTime(LocalTime.MIN), dateVote.atTime(LocalTime.MAX));
+    public Vote getVoteByDateVoteAndUser(LocalDate dateVote, User user) {
+        return checkNotFoundOptional(voteRepository.findVoteByDateVoteAndUser(dateVote, user),
+                "dateVote = " + dateVote + " user = " + user);
     }
 }

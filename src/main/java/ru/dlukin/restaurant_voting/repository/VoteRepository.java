@@ -5,16 +5,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.model.Vote;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
-    List<Vote> findAllByDateTimeVoteBetweenAndUser(LocalDateTime startDate, LocalDateTime endDate, User user);
+    List<Vote> findAllByUser(User user);
 
-    List<Vote> findAllByRestaurantId(int restaurantId);
-
-    List<Vote> findAllByRestaurantIdAndDateTimeVoteBetween(int restaurantId, LocalDateTime startDate,
-                                                     LocalDateTime endDate);
+    Optional<Vote> findVoteByDateVoteAndUser(LocalDate dateVote, User user);
 }

@@ -1,57 +1,65 @@
 package ru.dlukin.restaurant_voting.web.user;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.to.UserTo;
+import ru.dlukin.restaurant_voting.util.UserUtil;
 import ru.dlukin.restaurant_voting.web.AuthUser;
-import ru.dlukin.restaurant_voting.web.abstractcontroller.AbstractUserController;
+import ru.dlukin.restaurant_voting.web.abstractcontroller.AbstractAccountController;
 
 import javax.validation.Valid;
 import java.net.URI;
 
+import static ru.dlukin.restaurant_voting.util.ValidationUtil.assureIdConsistent;
+import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNew;
+
 @RestController
 @RequestMapping(value = UserAccountController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserAccountController extends AbstractUserController {
+@Slf4j
+@CacheConfig(cacheNames = "users")
+public class UserAccountController extends AbstractAccountController {
 
-    static final String REST_URL = "/api/user/account";
+    public static final String REST_URL = "/api/user/account";
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public User get(@AuthenticationPrincipal AuthUser authUser) {
-        return super.get(authUser.id());
-    }
-
-    @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "users", key = "#authUser.username")
-    public void delete(@AuthenticationPrincipal AuthUser authUser) {
-        super.delete(authUser.id());
-    }
-
-    @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> registration(@Valid @RequestBody UserTo userTo) {
-        User created = super.create(userTo);
-        URI uriOfNewResource =
-                ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path(REST_URL + "/{id}")
-                        .buildAndExpand(created.getId())
-                        .toUri();
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    @CacheEvict(allEntries = true)
+    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
+        log.info("register {}", userTo);
+        checkNew(userTo);
+        User created = prepareAndSave(UserUtil.createNewFromTo(userTo));
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
-        User oldUser = authUser.getUser();
-        user.setRoles(oldUser.getRoles());
-        if (user.getPassword() == null) {
-            user.setPassword(oldUser.getPassword());
-        }
-        super.update(user, authUser.id());
+    @Transactional
+    @CacheEvict(allEntries = true)
+    public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
+        assureIdConsistent(userTo, authUser.id());
+        User user = authUser.getUser();
+        prepareAndSave(UserUtil.updateFromTo(user, userTo));
+    }
+
+    @GetMapping
+    public User get(@AuthenticationPrincipal AuthUser authUser) {
+        return authUser.getUser();
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@AuthenticationPrincipal AuthUser authUser) {
+        super.delete(authUser.id());
     }
 }

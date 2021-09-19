@@ -4,14 +4,17 @@ import ru.dlukin.restaurant_voting.MatcherFactory;
 import ru.dlukin.restaurant_voting.model.Role;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.to.UserTo;
+import ru.dlukin.restaurant_voting.util.JsonUtil;
 
 public class UserTestData {
-    public static final MatcherFactory.Matcher<User> MATCHER =
+    public static final MatcherFactory.Matcher<User> USER_MATCHER =
             MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "password");
 
     public static final int USER_ID = 1;
     public static final int ADMIN_ID = USER_ID + 3;
     public static final int NOT_FOUND_ID = 100;
+    public static final String ADMIN_MAIL = "admin@restaurant.com";
+    public static final String USER_MAIL = "user1@gmail.com";
 
     public static final User admin = new User(ADMIN_ID, "Admin1_Name", "admin@restaurant.com", "{noop}admin",
             Role.USER, Role.ADMIN);
@@ -36,5 +39,9 @@ public class UserTestData {
         updated.setEmail("update@gmail.com");
         updated.setPassword("{noop}newPass");
         return updated;
+    }
+
+    public static String jsonWithPassword(User user, String passw) {
+        return JsonUtil.writeAdditionProps(user, "password", passw);
     }
 }
