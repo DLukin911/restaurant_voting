@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/120c776b7bce4e0e8b455628803def29)](https://app.codacy.com/gh/DLukin911/restaurant_voting?utm_source=github.com&utm_medium=referral&utm_content=DLukin911/restaurant_voting&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://app.travis-ci.com/DLukin911/restaurant_voting.svg?branch=master)](https://app.travis-ci.com/DLukin911/restaurant_voting)
 
 # Restaurant voting system
