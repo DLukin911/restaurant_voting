@@ -1,6 +1,8 @@
 package ru.dlukin.restaurant_voting.web.admin;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@CacheConfig(cacheNames = "menu")
 public class AdminRestaurantController extends AbstractRestaurantController {
 
     public static final String REST_URL = "/api/admin/restaurants";
@@ -75,6 +78,7 @@ public class AdminRestaurantController extends AbstractRestaurantController {
     }
 
     @Override
+    @Cacheable
     @GetMapping("/by-today")
     public List<Restaurant> getAllByToday() {
         return super.getAllByToday();

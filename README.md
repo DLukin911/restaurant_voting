@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/DLukin911/restaurant_voting.svg?branch=master)](https://app.travis-ci.com/DLukin911/restaurant_voting)
+
 # Restaurant voting system
 ## Task
 
@@ -28,7 +30,7 @@ mvn package
 java -jar target/restaurant_voting-{VERSION}.jar
 ```
 You can view the API documentation in swagger-ui by pointing to
-http://localhost:8080/swagger-ui/
+http://localhost:8080/swagger-ui.html
 
 ## Credentials:
 ```
