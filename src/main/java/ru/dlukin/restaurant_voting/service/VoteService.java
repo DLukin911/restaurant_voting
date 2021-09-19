@@ -8,6 +8,7 @@ import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.model.Vote;
 import ru.dlukin.restaurant_voting.repository.VoteRepository;
 import ru.dlukin.restaurant_voting.util.exception.IllegalRequestDataException;
+import ru.dlukin.restaurant_voting.util.exception.UpdateConflict;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,15 +36,17 @@ public class VoteService {
     }
 
     @Transactional
-    public void update(User user) {
-        Optional<Vote> vote = voteRepository.findVoteByDateVoteAndUser(LocalDate.now(), user);
-        if (vote.isEmpty()) {
-            throw new IllegalRequestDataException("Create a voice first");
-        } else if (LocalTime.now().isAfter(DEADLINE_TIME_VOTE)) {
-            throw new IllegalArgumentException("The vote has already been counted, after 11:00 you cannot change" +
+    public void update(LocalTime localTime, Restaurant restaurant, User user) {
+        Optional<Vote> voteOptional = voteRepository.findVoteByDateVoteAndUser(LocalDate.now(), user);
+        if (voteOptional.isEmpty()) {
+            throw new UpdateConflict("Create a voice first");
+        } else if (localTime.isAfter(DEADLINE_TIME_VOTE)) {
+            throw new UpdateConflict("The vote has already been counted, after 11:00 you cannot change" +
                     " the voting result");
         }
-        voteRepository.save(vote.get());
+        Vote vote = voteOptional.get();
+        vote.setRestaurant(restaurant);
+        voteRepository.save(vote);
     }
 
     public List<Vote> getAllByUser(User user) {

@@ -5,21 +5,10 @@ import ru.dlukin.restaurant_voting.HasId;
 import ru.dlukin.restaurant_voting.util.exception.IllegalRequestDataException;
 import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 
-import javax.validation.*;
 import java.util.Optional;
-import java.util.Set;
 
 @UtilityClass
 public class ValidationUtil {
-
-    private static final Validator validator;
-
-    static {
-        //  From Javadoc: implementations are thread-safe and instances are typically cached and reused.
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        //  From Javadoc: implementations of this interface must be thread-safe
-        validator = factory.getValidator();
-    }
 
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
@@ -42,30 +31,12 @@ public class ValidationUtil {
         }
     }
 
-    public static <T> void validate(T bean) {
-        // https://alexkosarev.name/2018/07/30/bean-validation-api/
-        Set<ConstraintViolation<T>> violations = validator.validate(bean);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
-    }
-
-    public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFoundWithId(object != null, id);
-        return object;
-    }
-
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id = " + id);
     }
 
     public static void checkNotFoundWithIdAndRestaurantId(boolean found, int id, int restaurantId) {
         checkNotFound(found, "id = " + id + " and Restaurant id = " + restaurantId);
-    }
-
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
-        return object;
     }
 
     public static void checkNotFound(boolean found, String msg) {

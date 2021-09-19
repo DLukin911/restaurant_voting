@@ -2,6 +2,7 @@ package ru.dlukin.restaurant_voting.web.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import ru.dlukin.restaurant_voting.web.AuthUser;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -44,9 +46,11 @@ public class UserVoteController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@AuthenticationPrincipal AuthUser authUser){
-        log.info("update");
-        voteService.update(authUser.getUser());
+    public void update(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
+                       @AuthenticationPrincipal AuthUser authUser,
+                       @RequestParam int restaurantId) {
+        log.info("update with restaurantId {}, time {}", time, restaurantId);
+        voteService.update(time, restaurantService.get(restaurantId), authUser.getUser());
     }
 
     @GetMapping
