@@ -33,7 +33,7 @@ java -jar target/restaurant_voting-{VERSION}.jar
 You can view the API documentation in swagger-ui by pointing to
 http://localhost:8080/swagger-ui.html
 
-## Credentials:
+## Credentials
 ```
 LOGIN                        PASSWORD
 
