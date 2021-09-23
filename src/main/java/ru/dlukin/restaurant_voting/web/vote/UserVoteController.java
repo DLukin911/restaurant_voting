@@ -1,4 +1,4 @@
-package ru.dlukin.restaurant_voting.web.user;
+package ru.dlukin.restaurant_voting.web.vote;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dlukin.restaurant_voting.model.Vote;
-import ru.dlukin.restaurant_voting.service.RestaurantService;
+import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
 import ru.dlukin.restaurant_voting.service.VoteService;
 import ru.dlukin.restaurant_voting.web.AuthUser;
 
@@ -18,6 +18,8 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+import static ru.dlukin.restaurant_voting.util.ValidationUtil.checkNotFoundOptional;
 
 @Slf4j
 @RestController
@@ -30,12 +32,13 @@ public class UserVoteController {
     private VoteService voteService;
 
     @Autowired
-    private RestaurantService restaurantService;
+    private RestaurantRepository restaurantRepository;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> createVote(@RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {
         log.info("create with restaurantId {}", restaurantId);
-        Vote created = voteService.create(restaurantService.get(restaurantId), authUser.getUser());
+        Vote created = voteService.create(checkNotFoundOptional(restaurantRepository.findById(restaurantId),
+                "restaurantId = " + restaurantId), authUser.getUser());
         URI uriOfNewResource =
                 ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path(REST_URL + "/today-vote")
@@ -50,7 +53,8 @@ public class UserVoteController {
                        @AuthenticationPrincipal AuthUser authUser,
                        @RequestParam int restaurantId) {
         log.info("update with restaurantId {}, time {}", time, restaurantId);
-        voteService.update(time, restaurantService.get(restaurantId), authUser.getUser());
+        voteService.update(time, checkNotFoundOptional(restaurantRepository.findById(restaurantId),
+                "restaurantId = " + restaurantId), authUser.getUser());
     }
 
     @GetMapping

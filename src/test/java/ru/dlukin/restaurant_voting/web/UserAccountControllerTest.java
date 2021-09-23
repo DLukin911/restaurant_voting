@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dlukin.restaurant_voting.testdata.UserTestData.*;
-import static ru.dlukin.restaurant_voting.web.user.UserAccountController.REST_URL;
+import static ru.dlukin.restaurant_voting.web.account.UserAccountController.REST_URL;
 
 class UserAccountControllerTest extends AbstractControllerTest {
 

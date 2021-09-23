@@ -19,7 +19,7 @@ import static ru.dlukin.restaurant_voting.testdata.UserTestData.USER_MAIL;
 import static ru.dlukin.restaurant_voting.testdata.UserTestData.user;
 import static ru.dlukin.restaurant_voting.testdata.VoteTestData.*;
 import static ru.dlukin.restaurant_voting.util.JsonUtil.writeValue;
-import static ru.dlukin.restaurant_voting.web.user.UserVoteController.REST_URL;
+import static ru.dlukin.restaurant_voting.web.vote.UserVoteController.REST_URL;
 
 class VoteControllerTest extends AbstractControllerTest {
 

@@ -1,34 +1,45 @@
-package ru.dlukin.restaurant_voting.web.admin;
+package ru.dlukin.restaurant_voting.web.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dlukin.restaurant_voting.model.Restaurant;
+import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
 import ru.dlukin.restaurant_voting.to.RestaurantTo;
 import ru.dlukin.restaurant_voting.util.View;
-import ru.dlukin.restaurant_voting.web.abstractcontroller.AbstractRestaurantController;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
+import static ru.dlukin.restaurant_voting.util.RestaurantUtil.createNewFromTo;
+import static ru.dlukin.restaurant_voting.util.RestaurantUtil.updateFromTo;
+import static ru.dlukin.restaurant_voting.util.ValidationUtil.*;
+
+@Slf4j
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @CacheConfig(cacheNames = "menu")
-public class AdminRestaurantController extends AbstractRestaurantController {
+public class AdminRestaurantController {
 
     public static final String REST_URL = "/api/admin/restaurants";
 
+    @Autowired
+    RestaurantRepository repository;
+
+    @Transactional
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createRestaurant(@Valid @RequestBody RestaurantTo restaurantTo) {
-        Restaurant created = super.create(restaurantTo);
+        checkNew(restaurantTo);
+        log.info("create {}", restaurantTo);
+        Restaurant created = repository.save(createNewFromTo(restaurantTo));
         URI uriOfNewResource =
                 ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path(REST_URL + "/{id}")
@@ -37,50 +48,38 @@ public class AdminRestaurantController extends AbstractRestaurantController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable int id) {
-        super.update(restaurantTo, id);
+        assureIdConsistent(restaurantTo, id);
+        log.info("update {} with id={}", restaurantTo, id);
+        repository.save(updateFromTo(checkNotFoundOptional(repository.findById(id), "id = " + id), restaurantTo));
     }
 
-    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        super.delete(id);
+        log.info("delete {}", id);
+        checkNotFoundWithId(repository.delete(id) != 0, id);
     }
 
-    @Override
     @GetMapping("/{id}")
     @JsonView(View.REST.class)
     public Restaurant get(@PathVariable int id) {
-        return super.get(id);
+        log.info("get {}", id);
+        return checkNotFoundOptional(repository.findById(id), "id = " + id);
     }
 
-    @Override
     @GetMapping
     @JsonView(View.REST.class)
     public List<Restaurant> getAll() {
-        return super.getAll();
+        log.info("getAll");
+        return repository.findAll();
     }
 
-    @Override
     @GetMapping("/by-name")
     public Restaurant getByName(@RequestParam String name) {
-        return super.getByName(name);
-    }
-
-    @Override
-    @GetMapping("/by-date")
-    public List<Restaurant> getAllByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return super.getAllByDate(date);
-    }
-
-    @Override
-    @Cacheable
-    @GetMapping("/by-today")
-    public List<Restaurant> getAllByToday() {
-        return super.getAllByToday();
+        log.info("getByName {}", name);
+        return checkNotFoundOptional(repository.findByName(name), "name = " + name);
     }
 }

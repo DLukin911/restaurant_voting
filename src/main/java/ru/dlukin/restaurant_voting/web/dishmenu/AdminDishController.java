@@ -1,4 +1,4 @@
-package ru.dlukin.restaurant_voting.web.admin;
+package ru.dlukin.restaurant_voting.web.dishmenu;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

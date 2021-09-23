@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
-import ru.dlukin.restaurant_voting.web.admin.AdminRestaurantController;
+import ru.dlukin.restaurant_voting.web.restaurant.AdminRestaurantController;
 
 import java.util.List;
 
@@ -134,25 +134,5 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(kfc));
-    }
-
-    @Test
-    @WithMockUser(username = "admin@restaurant.com", password = "admin", roles = "ADMIN")
-    void getByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "by-date?date=2021-09-01"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(List.of(burgerKing)));
-    }
-
-    @Test
-    @WithMockUser(username = "admin@restaurant.com", password = "admin", roles = "ADMIN")
-    void getByToday() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "by-today"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(kfc, mcDonalds));
     }
 }

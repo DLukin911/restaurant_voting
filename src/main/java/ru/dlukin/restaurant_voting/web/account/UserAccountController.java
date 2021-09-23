@@ -1,4 +1,4 @@
-package ru.dlukin.restaurant_voting.web.user;
+package ru.dlukin.restaurant_voting.web.account;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
@@ -14,7 +14,6 @@ import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.to.UserTo;
 import ru.dlukin.restaurant_voting.util.UserUtil;
 import ru.dlukin.restaurant_voting.web.AuthUser;
-import ru.dlukin.restaurant_voting.web.abstractcontroller.AbstractAccountController;
 
 import javax.validation.Valid;
 import java.net.URI;

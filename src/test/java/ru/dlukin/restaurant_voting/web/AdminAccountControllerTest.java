@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Role;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.repository.UserRepository;
-import ru.dlukin.restaurant_voting.web.admin.AdminAccountController;
+import ru.dlukin.restaurant_voting.web.account.AdminAccountController;
 
 import java.util.List;
 
