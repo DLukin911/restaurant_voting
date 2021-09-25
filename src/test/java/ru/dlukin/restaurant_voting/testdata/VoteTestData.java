@@ -5,7 +5,7 @@ import ru.dlukin.restaurant_voting.model.Vote;
 
 public class VoteTestData {
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER =
-            MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "dateVote", "user", "restaurant.dishes");
+            MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "dateVote", "user", "restaurant.menuItems");
 
     public static final int VOTE_ID = 1;
     public static final int NOT_FOUND_ID = 100;

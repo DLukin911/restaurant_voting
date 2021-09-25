@@ -8,13 +8,13 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "dish", indexes = {@Index(name = "dish_name_date_idx", columnList = "restaurant_id, date, name",
+@Table(name = "menu_item", indexes = {@Index(name = "menu_item_name_date_idx", columnList = "restaurant_id, date, name",
         unique = true)})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-public class Dish extends AbstractNamedEntity {
+public class MenuItem extends AbstractNamedEntity {
 
     @Column(name = "date", nullable = false)
     @NotNull
@@ -29,11 +29,11 @@ public class Dish extends AbstractNamedEntity {
     @JsonBackReference
     private Restaurant restaurant;
 
-    public Dish(Dish d) {
+    public MenuItem(MenuItem d) {
         this(d.id, d.name, d.date, d.price, d.restaurant);
     }
 
-    public Dish(Integer id, String name, LocalDate date, Integer price, Restaurant restaurant) {
+    public MenuItem(Integer id, String name, LocalDate date, Integer price, Restaurant restaurant) {
         super(id, name);
         this.date = date;
         this.price = price;

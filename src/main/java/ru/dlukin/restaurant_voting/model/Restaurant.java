@@ -13,21 +13,21 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"dishes"})
+@ToString(callSuper = true, exclude = {"menuItems"})
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("name ASC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    private List<Dish> dishes;
+    private List<MenuItem> menuItems;
 
     public Restaurant(Restaurant r) {
-        this(r.id, r.name, r.dishes);
+        this(r.id, r.name, r.menuItems);
     }
 
-    public Restaurant(Integer id, String name, List<Dish> dishes) {
+    public Restaurant(Integer id, String name, List<MenuItem> menuItems) {
         super(id, name);
-        this.dishes = dishes;
+        this.menuItems = menuItems;
     }
 }
