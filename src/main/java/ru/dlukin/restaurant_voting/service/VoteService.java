@@ -3,7 +3,6 @@ package ru.dlukin.restaurant_voting.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.model.Vote;
 import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
