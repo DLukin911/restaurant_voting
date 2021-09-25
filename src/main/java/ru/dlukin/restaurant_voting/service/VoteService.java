@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Restaurant;
 import ru.dlukin.restaurant_voting.model.User;
 import ru.dlukin.restaurant_voting.model.Vote;
+import ru.dlukin.restaurant_voting.repository.RestaurantRepository;
 import ru.dlukin.restaurant_voting.repository.VoteRepository;
 import ru.dlukin.restaurant_voting.util.exception.IllegalRequestDataException;
 import ru.dlukin.restaurant_voting.util.exception.UpdateConflict;
@@ -25,9 +26,12 @@ public class VoteService {
 
     private final VoteRepository voteRepository;
 
+    private final RestaurantRepository restaurantRepository;
+
     @Transactional
-    public Vote create(Restaurant restaurant, User user) {
-        Vote vote = new Vote(null, restaurant, user);
+    public Vote create(int restaurantId, User user) {
+        Vote vote = new Vote(null, checkNotFoundOptional(restaurantRepository.findById(restaurantId),
+                "restaurantId = " + restaurantId), user);
         if (voteRepository.findVoteByDateVoteAndUser(LocalDate.now(), user).isEmpty()) {
             return voteRepository.save(vote);
         } else {
@@ -36,7 +40,7 @@ public class VoteService {
     }
 
     @Transactional
-    public void update(LocalTime localTime, Restaurant restaurant, User user) {
+    public void update(LocalTime localTime, int restaurantId, User user) {
         Optional<Vote> voteOptional = voteRepository.findVoteByDateVoteAndUser(LocalDate.now(), user);
         if (voteOptional.isEmpty()) {
             throw new UpdateConflict("Create a voice first");
@@ -45,7 +49,8 @@ public class VoteService {
                     " the voting result");
         }
         Vote vote = voteOptional.get();
-        vote.setRestaurant(restaurant);
+        vote.setRestaurant(checkNotFoundOptional(restaurantRepository.findById(restaurantId),
+                "restaurantId = " + restaurantId));
         voteRepository.save(vote);
     }
 

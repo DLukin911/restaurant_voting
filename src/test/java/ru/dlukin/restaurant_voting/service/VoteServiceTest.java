@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.dlukin.restaurant_voting.model.Vote;
 import ru.dlukin.restaurant_voting.testdata.VoteTestData;
 import ru.dlukin.restaurant_voting.util.exception.IllegalRequestDataException;
+import ru.dlukin.restaurant_voting.util.exception.NotFoundException;
 import ru.dlukin.restaurant_voting.util.exception.UpdateConflict;
 
 import javax.validation.ConstraintViolationException;
@@ -31,7 +32,7 @@ class VoteServiceTest {
     @Test
     @Transactional
     void create() {
-        Vote created = service.create(kfc, newUserForVote);
+        Vote created = service.create(1, newUserForVote);
         int newId = created.id();
         Vote newVote = VoteTestData.getNew();
         newVote.setId(newId);
@@ -42,27 +43,27 @@ class VoteServiceTest {
     @Test
     @Transactional
     void createDuplicate() {
-        service.create(kfc, newUserForVote);
-        assertThrows(IllegalRequestDataException.class, () -> service.create(kfc, newUserForVote));
+        service.create(1, newUserForVote);
+        assertThrows(IllegalRequestDataException.class, () -> service.create(1, newUserForVote));
     }
 
     @Test
     @Transactional
     void update() {
-        service.update(LocalTime.of(10, 0), kfc, user);
+        service.update(LocalTime.of(10, 0), 1, user);
         VOTE_MATCHER.assertMatch(service.getVoteByDateVoteAndUser(LocalDate.now(), user), VoteTestData.getUpdated());
     }
 
     @Test
     @Transactional
     void updateInvalidAfterDeadLineTime() {
-        assertThrows(UpdateConflict.class, () -> service.update(LocalTime.of(12, 0), kfc, user));
+        assertThrows(UpdateConflict.class, () -> service.update(LocalTime.of(12, 0), 1, user));
     }
 
     @Test
     @Transactional
     void updateEmptyVote() {
-        assertThrows(UpdateConflict.class, () -> service.update(LocalTime.of(10, 0), kfc, newUserForTestApi));
+        assertThrows(UpdateConflict.class, () -> service.update(LocalTime.of(10, 0), 1, newUserForTestApi));
     }
 
     @Test
@@ -81,7 +82,7 @@ class VoteServiceTest {
 
     @Test
     void createWithException() {
-        assertThrows(ConstraintViolationException.class, () -> service.create(mcDonalds, null));
-        assertThrows(ConstraintViolationException.class, () -> service.create(null, newUserForVote));
+        assertThrows(ConstraintViolationException.class, () -> service.create(2, null));
+        assertThrows(NotFoundException.class, () -> service.create(0, newUserForVote));
     }
 }
