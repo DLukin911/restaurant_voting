@@ -2,6 +2,7 @@ package ru.dlukin.restaurant_voting.web.menuitem;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,6 +35,7 @@ public class AdminMenuItemController {
     private MenuItemService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(value = "menu", allEntries = true)
     public ResponseEntity<MenuItem> createMenuItem(@Valid @RequestBody MenuItemTo menuItemTo, @PathVariable int restaurantId) {
         checkNew(menuItemTo);
         log.info("create with restaurantId {}", restaurantId);
@@ -49,6 +51,7 @@ public class AdminMenuItemController {
     @Transactional
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "menu", allEntries = true)
     public void update(@Valid @RequestBody MenuItemTo menuItemTo, @PathVariable int restaurantId, @PathVariable int id) {
         assureIdConsistent(menuItemTo, id);
         MenuItem menuItem = updateFromTo(service.getByIdAndRestaurantId(id, restaurantId), menuItemTo);
@@ -58,6 +61,7 @@ public class AdminMenuItemController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "menu", allEntries = true)
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("delete with dishId={} and restaurantId {}", id, restaurantId);
         service.delete(id, restaurantId);
